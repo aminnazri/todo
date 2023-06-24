@@ -37,3 +37,5 @@ Route::middleware([
 });
 
 Route::get('/todo', [TodoController::class, 'index'])->name('todos.index');
+Route::get('/addtask', [TodoController::class, 'create'])->name('todos.addtask');
+Route::post('/', [TodoController::class, 'store'])->name('todos.store');

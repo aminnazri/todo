@@ -1,68 +1,88 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { router } from "@inertiajs/vue3";
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+
+
 defineProps({
     todos: Array,
 });
 
+const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const date = new Date();
 
 </script>
 
 <template>
     <AppLayout title="Dashboard">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                todo
+            <h2 class="font-semibold text-xl text-gray-100 leading-tight bg-gray-900 p-4 rounded">
+                My Day - {{ weekday[date.getDay()]}} , {{ date.getDay() }} {{ month[date.getMonth()]}}
+
             </h2>
         </template>
-
-        <div class="py-12 bg-white">
+        
+        <div class="py-12 bg-white-100">
+            
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <!-- <Welcome /> -->
-                    <!-- <table id="myTable" class="display min-w-full border text-center text-sm font-light dark:border-neutral-500 ">
-                        <thead class="border-b font-medium dark:border-neutral-500">
-                            <tr>
-                                <th scope="col"
-                                    class="data-priority='1'' px-1 py-4 border border-slate-300 bg-neutral-200">No.</th>
-                                <th scope="col"
-                                    class=" px-12 py-4 border border-slate-300 bg-neutral-200">Senarai</th>
-                                <th scope="col"
-                                    class="px-12 py-4 border border-slate-300 bg-neutral-200 ">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                            <tr class="px-12 py-3 border border-slate-300 " v-for="(todo, index) in todos" :key="index">
-                                <td class="border border-slate-300">{{ index+1 }}</td>
-                                <td class="px-12 py-3 border border-slate-300 text-left">
-                                    {{ todo.task }}
-                                    <br>
-                                    {{ todo.description }}
-                                    
-                                </td>
-                                
-                                <td class="border border-slate-300">
-                                    {{ todo.status }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> -->
+                <PrimaryButton class="ml-4 bg-dark-600" >
+                    <Link :href="route('todos.addtask')" >
+                        Add Task
+                    </Link>
+                    
+                </PrimaryButton>
 
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4 m-2">
                     <div >
                         <h1 class="H1">Tasks</h1>
                         <div v-for="(todo, index) in todos" :key="index" >
-                            <div v-if="!todo.status==1"  class="bg-slate-100 rounded-xl p-3 dark:bg-slate-100 flex m-2"  >
-                                <div class=" m-2 ">
-                                <input id="default-checkbox"  type="checkbox" :checked="todo.status == 1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                        
+                            <div v-if="!todo.status==1"  class="bg-slate-100 rounded-xl p-3 dark:bg-slate-100 m-2 flex justify-between"  >
+                                <div class="flex ">
+                                    <div class=" m-2 ">
+                                        <input id="default-checkbox"  type="checkbox" :checked="todo.status == 1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-400 rounded   dark:ring-offset-gray-800 focus:ring-0 dark:bg-gray-700 dark:border-gray-600">                        
 
+                                    </div>
+                                    <div class=" space-y-2 m-2">
+                                        
+                                        <p class="text-base/ ">
+                                            {{ todo.task }}
+                                        </p>
+                                        <p class="text-sm text-gray-700">
+                                            {{ todo.description }}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class=" space-y-4 m-2">
-                                    
-                                    <p class="text-m font-small">
-                                        {{ todo.task }}
-                                    </p>
+                                <!-- dropdown -->
+                                <div>
+                                    <Menu as="div" class="relative inline-block text-left">
+                                        <div>
+                                            <MenuButton class="inline-flex w-full justify-center gap-x-1.5 rounded-md  px-2 py-2 text-sm font-semibold text-black shadow-sm ring-0 ring-inset ring-gray-300 hover:bg-gray-50">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                                                </svg>
+
+                                                <!-- <ChevronDownIcon class="-mr-1 h-5 w-5 text-black" aria-hidden="true" /> -->
+                                            </MenuButton>
+                                        </div>
+
+                                        <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                                            <MenuItems class="absolute right-0 z-10 mt-2  origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                <div class="py-1">
+                                                    <MenuItem v-slot="{ active }">
+                                                        <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Edit</a>
+                                                    </MenuItem>
+                                                    <MenuItem v-slot="{ active }">
+                                                        <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Delete</a>
+                                                    </MenuItem>
+                                                </div>
+                                            </MenuItems>
+                                        </transition>
+                                    </Menu>
                                 </div>
+                                
                             </div>                                          
                         </div>
                        
@@ -71,23 +91,58 @@ defineProps({
                     <figure >
                         <h3>completed</h3>
                         <div v-for="(todo, index) in todos" :key="index" >
-                            <div v-if="todo.status==1"  class="bg-slate-100 rounded-xl p-3 dark:bg-slate-100 flex m-2"  >
-                                <div class=" m-2 ">
-                                <input id="default-checkbox"  type="checkbox" :checked="todo.status == 1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                        
+                            <div v-if="todo.status==1"  class="bg-slate-100 rounded-xl p-3 dark:bg-slate-100 m-2 flex justify-between"  >
+                                <div class="flex ">
+                                    <div class=" m-2 ">
+                                        <input id="default-checkbox"  type="checkbox" :checked="todo.status == 1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-400 rounded  dark:ring-offset-gray-800 focus:ring-0 dark:bg-gray-700 dark:border-gray-600">                        
 
+                                    </div>
+                                    <div class=" space-y-2 m-2">
+                                        
+                                        <p class="text-base font-small">
+                                            {{ todo.task }}
+                                        </p>
+                                        <p class="text-sm text-gray-700">
+                                            {{ todo.description }}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class=" space-y-4 m-2">
-                                    
-                                    <p class="text-m font-small">
-                                        {{ todo.task }}
-                                    </p>
+                                <!-- dropdown -->
+                                <div>
+                                    <Menu as="div" class="relative inline-block text-left">
+                                        <div>
+                                            <MenuButton class="inline-flex w-full justify-center gap-x-1.5 rounded-md  px-2 py-2 text-sm font-semibold text-black shadow-sm ring-0 ring-inset ring-gray-300 hover:bg-gray-50">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                                                </svg>
+
+                                                <!-- <ChevronDownIcon class="-mr-1 h-5 w-5 text-black" aria-hidden="true" /> -->
+                                            </MenuButton>
+                                        </div>
+
+                                        <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                                            <MenuItems class="absolute right-0 z-10 mt-2  origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                <div class="py-1">
+                                                    <MenuItem v-slot="{ active }">
+                                                        <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Edit</a>
+                                                    </MenuItem>
+                                                    <MenuItem v-slot="{ active }">
+                                                        <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Delete</a>
+                                                    </MenuItem>
+                                                </div>
+                                            </MenuItems>
+                                        </transition>
+                                    </Menu>
                                 </div>
-                            </div>                                          
+                                
+                            </div>                                       
                         </div>
                        
                     </figure>
                     
                 </div>
+                
+                
 
 
             </div>

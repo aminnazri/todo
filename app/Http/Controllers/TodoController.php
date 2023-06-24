@@ -16,7 +16,7 @@ class TodoController extends Controller
 
         // show page only
         // return inertia('Todo/index');
-        // $todos =auth()->user()->todos;
+        // $todos = auth()->user()->todos;
         // dd($todos);
         return inertia('Todo/index', [
             'todos' => auth()->user()->todos
@@ -29,7 +29,7 @@ class TodoController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Todo/form');
     }
 
     /**
@@ -37,7 +37,14 @@ class TodoController extends Controller
      */
     public function store(StoreTodoRequest $request)
     {
-        //
+        $todo = new Todo();
+        $todo->task = $request->task;
+        $todo->description = $request->description ?? null;
+        $todo->status = "0";
+        $todo->user()->associate(auth()->user());
+        $todo->save();
+
+        return to_route('todos.index');
     }
 
     /**

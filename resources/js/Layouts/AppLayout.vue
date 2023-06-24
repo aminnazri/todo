@@ -48,8 +48,11 @@ const logout = () => {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <!-- <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
+                                </NavLink> -->
+                                <NavLink :href="route('todos.index')" :active="route().current('todos.index')">
+                                    Todo
                                 </NavLink>
                             </div>
                         </div>

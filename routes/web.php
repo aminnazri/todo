@@ -36,6 +36,8 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('/todo', [TodoController::class, 'index'])->name('todos.index');
+Route::get('/', [TodoController::class, 'index'])->name('todos.index');
+// Route::get('/todo', [TodoController::class, 'index'])->name('todos.index');
 Route::get('/addtask', [TodoController::class, 'create'])->name('todos.addtask');
 Route::post('/', [TodoController::class, 'store'])->name('todos.store');
+Route::delete('/todo/{todo}', [TodoController::class, 'destroy'])->name('todos.delete');

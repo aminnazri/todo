@@ -13,7 +13,10 @@ class TodoController extends Controller
      */
     public function index()
     {
-
+        
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
         // show page only
         // return inertia('Todo/index');
         // $todos = auth()->user()->todos;
@@ -77,5 +80,7 @@ class TodoController extends Controller
     public function destroy(Todo $todo)
     {
         //
+        $todo->delete();
+        return back();
     }
 }

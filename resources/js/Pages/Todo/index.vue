@@ -3,12 +3,15 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 
 
 defineProps({
     todos: Array,
 });
+function padam(senarai) {
+    router.delete(route("todos.delete", senarai));
+}
 
 const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -20,22 +23,25 @@ const date = new Date();
     <AppLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-100 leading-tight bg-gray-900 p-4 rounded">
-                My Day - {{ weekday[date.getDay()]}} , {{ date.getDay() }} {{ month[date.getMonth()]}}
+                My Day - {{ weekday[date.getDay()]}} , {{ date.getDate()}} {{ month[date.getMonth()]}}
 
             </h2>
         </template>
         
-        <div class="py-12 bg-white-100">
+        <div class="py-6 bg-white-100">
             
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <PrimaryButton class="ml-4 bg-dark-600" >
-                    <Link :href="route('todos.addtask')" >
-                        Add Task
-                    </Link>
+                <!-- <PrimaryButton class="ml-4 bg-dark-600" > -->
+                    <button class="rounded bg-black p-2 text-white ">
+                        <Link :href="route('todos.addtask')" >
+                            Add Task
+                        </Link>
+                    </button>
                     
-                </PrimaryButton>
+                    
+                <!-- </PrimaryButton> -->
 
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4 m-2">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4 mt-2">
                     <div >
                         <h1 class="H1">Tasks</h1>
                         <div v-for="(todo, index) in todos" :key="index" >
@@ -75,7 +81,7 @@ const date = new Date();
                                                         <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Edit</a>
                                                     </MenuItem>
                                                     <MenuItem v-slot="{ active }">
-                                                        <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Delete</a>
+                                                        <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']" @click="padam(todo)" >Delete</a>
                                                     </MenuItem>
                                                 </div>
                                             </MenuItems>
@@ -127,7 +133,7 @@ const date = new Date();
                                                         <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Edit</a>
                                                     </MenuItem>
                                                     <MenuItem v-slot="{ active }">
-                                                        <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Delete</a>
+                                                        <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']" @click="padam(todo)" >Delete</a>
                                                     </MenuItem>
                                                 </div>
                                             </MenuItems>

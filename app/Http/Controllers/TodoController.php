@@ -64,6 +64,9 @@ class TodoController extends Controller
     public function edit(Todo $todo)
     {
         //
+        return inertia('Todo/form', [
+            'todo' => $todo
+        ]);
     }
 
     /**
@@ -72,6 +75,11 @@ class TodoController extends Controller
     public function update(UpdateTodoRequest $request, Todo $todo)
     {
         //
+        $todo->task = $request->task;
+        $todo->description = $request->description ?? null;
+        $todo->save();
+
+        return to_route('todos.index');
     }
 
     /**

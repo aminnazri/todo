@@ -11,7 +11,7 @@ class UpdateTodoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class UpdateTodoRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'task' => 'required | string'
             //
+        ];
+    }
+
+    public function messages(): array{
+        return [
+            'task.required' => 'Task is required'
         ];
     }
 }

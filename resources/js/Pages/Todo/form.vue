@@ -5,24 +5,25 @@ import {useForm} from '@inertiajs/vue3';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 
-// const props = defineProps({
-//     todo: {
-//         type: Object,
-//         default: null
-//     }
-// });
-
-// const form = useForm({
-//     task: props.todo ? props.todo.task : null,
-//     description: props.todo ? props.todo.description : null
-// });
-const form = useForm({
-    task: null,
-    description: null,
+const props = defineProps({
+    todo: {
+        type: Object,
+        default: null
+    }
 });
 
+const form = useForm({
+    task: props.todo ? props.todo.task : null,
+    description: props.todo ? props.todo.description : null,
+    status: props.todo ? props.todo.status : null
+});
+// const form = useForm({
+//     task: null,
+//     description: null,
+// });
+
 function submit(){
-    // props.todo ? form.put("/todos/" + props.todo.id) : form.post("/todo");
+    props.todo ? form.put("/" + props.todo.id) : form.post("/");
 }
 const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -37,7 +38,7 @@ const date = new Date();
     <AppLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-100 leading-tight bg-gray-900 p-4 rounded">
-                {{ weekday[date.getDay()]}} , {{ date.getDay() }} {{ month[date.getMonth()]}}
+                My Day - {{ weekday[date.getDay()]}} , {{ date.getDate()}} {{ month[date.getMonth()]}}
             </h2>
         </template>
         
@@ -54,7 +55,7 @@ const date = new Date();
                             <TextInput type="text" id="task"
                                 v-model="form.task"
                                 class="mt-1 block w-full" 
-                                required
+                                
                             />
                             <div v-if="form.errors.task">
                                 {{ form.errors.task }}
@@ -78,8 +79,8 @@ const date = new Date();
 
                         <!-- submit -->
                         <div class="flex items-center justify-end mt-4">
-                            <PrimaryButton type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                                Add task
+                            <PrimaryButton @click="submit()" type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                {{ todo ? "Update" : "Add Task" }}
                             </PrimaryButton>
                         </div>
 

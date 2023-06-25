@@ -22,7 +22,14 @@ class StoreTodoRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'task' => 'required | string'
             //
+        ];
+    }
+
+    public function messages(): array{
+        return [
+            'task.required' => 'Task is required'
         ];
     }
 }

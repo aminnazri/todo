@@ -13,6 +13,11 @@ function padam(senarai) {
     router.delete(route("todos.delete", senarai));
 }
 
+function check(todo){
+    router.put(route("todos.check", todo))
+}
+
+
 const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const date = new Date();
@@ -44,21 +49,29 @@ const date = new Date();
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4 mt-2">
                     <div >
                         <h1 class="H1">Tasks</h1>
-                        <div v-for="(todo, index) in todos" :key="index" >
+                        <div v-for="(todo, index) in todos.slice().reverse()" :key="index" >
                             <div v-if="!todo.status==1"  class="bg-slate-100 rounded-xl p-3 dark:bg-slate-100 m-2 flex justify-between"  >
                                 <div class="flex ">
                                     <div class=" m-2 ">
-                                        <input id="default-checkbox"  type="checkbox" :checked="todo.status == 1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-400 rounded   dark:ring-offset-gray-800 focus:ring-0 dark:bg-gray-700 dark:border-gray-600">                        
+                                        <input id="default-checkbox" @click="check(todo)" type="checkbox" :checked="todo.status == 1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-400 rounded   dark:ring-offset-gray-800 focus:ring-0 dark:bg-gray-700 dark:border-gray-600">                        
+                                        <!-- <input type="checkbox" v-model="todo.status" class="form-check-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-400 rounded   dark:ring-offset-gray-800 focus:ring-0 dark:bg-gray-700 dark:border-gray-600"> -->
 
                                     </div>
                                     <div class=" space-y-2 m-2">
                                         
-                                        <p class="text-base/ ">
-                                            {{ todo.task }}
-                                        </p>
-                                        <p class="text-sm text-gray-700">
-                                            {{ todo.description }}
-                                        </p>
+                                        <div>
+                                            <!-- <p class="text-base/ " v-on:click="toggle"> -->
+                                            <p class="text-base/ " >
+                                                {{ todo.task }}
+                                            </p>
+                                            
+                                        </div>
+                                        <div>
+                                            <!-- <p class="text-sm text-gray-700" v-show="showSection"> -->
+                                            <p class="text-sm text-gray-700" >
+                                                {{ todo.description }}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- dropdown -->
@@ -96,7 +109,7 @@ const date = new Date();
                     
                     <figure >
                         <h3>completed</h3>
-                        <div v-for="(todo, index) in todos" :key="index" >
+                        <div v-for="(todo, index) in todos.slice().reverse()" :key="index" >
                             <div v-if="todo.status==1"  class="bg-slate-100 rounded-xl p-3 dark:bg-slate-100 m-2 flex justify-between"  >
                                 <div class="flex ">
                                     <div class=" m-2 ">

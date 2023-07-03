@@ -91,4 +91,9 @@ class TodoController extends Controller
         $todo->delete();
         return back();
     }
+
+    public function check(Todo $todo){
+        $todo->status = "1";
+        $todo->save();
+    }
 }
